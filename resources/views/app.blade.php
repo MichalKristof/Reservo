@@ -4,6 +4,7 @@
     <title>Reservo</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     @inertiaHead
     @routes
 
@@ -12,10 +13,8 @@
     @else
         <style>
             body {
-                background: #fff3f3;
-                color: #b91c1c;
-                padding: 2rem;
-                font-family: sans-serif;
+                font-family: "Poppins", sans-serif;
+                color: #003366;
             }
         </style>
         <div style="text-align:center; font-size: 1.25rem;">

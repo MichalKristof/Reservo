@@ -3,6 +3,7 @@
 @layer base {
     body {
         font-family: "Poppins", sans-serif;
+        color: #003366;
     }
 }
 
@@ -12,55 +13,86 @@
     input[type="password"],
     input[type="search"],
     input[type="tel"],
-    input[type="url"], textarea {
-        @apply block w-full rounded-md border-0 p-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm bg-white;
+    input[type="url"],
+    textarea {
+        @apply block w-full rounded-lg border border-slate-200 p-3 text-slate-900 shadow-sm focus:ring-2 focus:ring-inset focus:ring-[#003366] placeholder:text-slate-400 bg-white;
     }
+
     label {
-        @apply block text-sm font-medium leading-6 text-slate-900 first-letter:capitalize;
+        @apply block text-sm font-medium leading-6 text-slate-700 mb-1;
     }
+
     header {
-        @apply bg-slate-800 shadow-md;
+        @apply bg-white shadow-sm border-b border-slate-100;
     }
+
     nav {
         @apply p-5 max-w-screen-lg mx-auto flex items-center justify-between;
     }
+
     main {
-        @apply max-w-screen-lg mx-auto;
+        @apply max-w-screen-lg mx-auto px-4 py-8;
     }
+
     .primary-btn {
-        @apply flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-slate-400 disabled:cursor-wait;
+        /* Pôvodné bg-[#00B29B] a hover:bg-[#00A08C] a focus:ring-[#00B29B] zmenené na #003366 a tmavší odtieň */
+        @apply flex w-full justify-center rounded-full bg-[#003366] px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#002B52] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] disabled:bg-slate-400 disabled:cursor-wait;
     }
+
     .text-link {
-        @apply font-semibold text-blue-500 hover:text-blue-600;
+        /* Pôvodné text-[#00B29B] a hover:text-[#00A08C] zmenené na #003366 a tmavší odtieň */
+        @apply font-semibold text-[#003366] hover:text-[#002B52];
     }
+
     .nav-link {
-        @apply text-slate-200 hover:bg-slate-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium;
+        @apply text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md px-4 py-2 text-sm font-medium transition;
     }
+
     .title {
-        @apply my-6 text-center text-3xl font-bold leading-9 text-slate-900;
+        @apply my-6 text-center text-4xl font-bold leading-tight text-slate-900;
     }
+
     .error {
         @apply text-xs text-red-500 mt-1;
     }
+
     table {
-        @apply w-full text-sm text-left rounded-md shadow-lg overflow-hidden mb-6 table-auto bg-white;
+        @apply w-full text-sm text-left rounded-lg shadow overflow-hidden mb-6 table-auto bg-white border border-slate-200;
     }
+
     thead {
-        @apply text-xs uppercase font-medium border-b border-slate-100 text-slate-600;
+        @apply text-xs uppercase font-semibold border-b border-slate-200 text-slate-600 bg-slate-50;
     }
+
     tbody tr {
-        @apply hover:bg-slate-100 w-full p-0;
+        @apply hover:bg-slate-100 transition;
     }
+
     th {
         @apply px-6 py-4;
     }
+
     td {
-        @apply px-6 py-4 border-b border-slate-100;
+        @apply px-6 py-4 border-b border-slate-200;
     }
+
     .avatar {
-        @apply w-8 h-8 rounded-full overflow-hidden object-center object-cover;
+        @apply w-10 h-10 rounded-full overflow-hidden object-center object-cover;
     }
+
     .round-btn {
-        @apply w-8 h-8 overflow-auto rounded-full bg-slate-100 focus:outline-none focus:ring-1 focus:ring-slate-100 focus:ring-offset-2 focus:ring-offset-slate-800;
+        @apply w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 transition focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-1;
+    }
+
+    .reservation-form {
+        @apply max-w-md mx-auto p-8 bg-white rounded-2xl shadow-lg space-y-6;
+    }
+
+    .reservation-title {
+        @apply text-center text-2xl font-bold text-slate-900 mb-4;
+    }
+
+    .reservation-description {
+        @apply text-center text-slate-600 text-sm mb-6;
     }
 }
