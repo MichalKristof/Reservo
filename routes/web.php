@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -16,6 +18,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', LogoutController::class)->name('logout');
     Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
+    Route::inertia('/reservations/create', 'Reservations/ReservationCreate')->name('reservations.create');
+    Route::post('/reservations/available-tables', [ReservationController::class, 'availableTables'])->name('reservations.availableTables');
 });
 
 Route::get('/info', function () {

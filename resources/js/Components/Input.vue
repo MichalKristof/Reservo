@@ -1,7 +1,8 @@
 <template>
-    <div class="mb-6">
+    <div class="w-full mb-6">
         <label>{{ name }}</label>
-        <input :class="{'ring-red-500' : message}" v-model="model" :type="type" name="name" :autocomplete="autocomplete"
+        <input :class="{'ring-red-500' : message}" v-model="model" :type="type" :name="name"
+               :autocomplete="autocomplete"
         />
         <small class="error" v-if="message">{{ message }}</small>
     </div>
@@ -18,10 +19,6 @@ const props = defineProps({
     type: {
         type: String,
         default: 'text'
-    },
-    modelValue: {
-        type: String,
-        default: ''
     },
     message: String,
 });

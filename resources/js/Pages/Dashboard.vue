@@ -2,6 +2,7 @@
     <Head :title="` | ${$page.component}`"/>
     <div>
         <h1>this is dashboard</h1>
+        {{ $page }}
     </div>
 </template>
 

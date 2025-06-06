@@ -2,24 +2,22 @@
     <div class="relative">
         <header>
             <nav>
-                <div class="space-x-6">
-                    <Link v-if="!$page.props.auth.user" :href="route('home')" preserve-scroll class="nav-link"
+                <div v-if="!$page.props.auth.user"  class="space-x-6">
+                    <Link :href="route('home')" preserve-scroll class="nav-link"
                           :class="{'bg-slate-100': $page.component === 'Home'}">Home
                     </Link>
-                    <Link v-if="$page.props.auth.user" :href="route('dashboard')" preserve-scroll class="nav-link"
+
+                </div>
+                <div v-if="$page.props.auth.user" class="space-x-6">
+                    <Link :href="route('dashboard')" preserve-scroll class="nav-link"
                           :class="{'bg-slate-100': $page.component === 'Dashboard'}">Dashboard
+                    </Link>
+                    <Link :href="route('reservations.create')" preserve-scroll class="nav-link"
+                          :class="{'bg-slate-100': $page.component === 'Reservations/ReservationsCreate'}">Reservation
                     </Link>
                 </div>
                 <div class="space-x-6">
-                    <div v-if="$page.props.auth.user" class="flex items-center gap-2">
-                        <span class="text-white">Welcome, {{ $page.props.auth.user.name }}</span>
-                        <Link :href="route('logout')" method="post" as="button" type="button" preserve-scroll
-                              class="nav-link">
-                            Logout
-                        </Link>
-                    </div>
-
-                    <div v-else class="flex items-center gap-2">
+                    <div  v-if="!$page.props.auth.user" class="flex items-center gap-2">
                         <Link :href="route('register')" as="button" type="button" preserve-scroll class="nav-link"
                               :class="{'bg-slate-100': $page.component === 'Auth/Register'}">
                             Register
@@ -27,6 +25,13 @@
                         <Link :href="route('login')" as="button" type="button" preserve-scroll class="nav-link"
                               :class="{'bg-slate-100': $page.component === 'Auth/Login'}">
                             Login
+                        </Link>
+                    </div>
+                    <div  v-else class="flex items-center gap-2">
+                        <span class="text-white">Welcome, {{ $page.props.auth.user.name }}</span>
+                        <Link :href="route('logout')" method="post" as="button" type="button" preserve-scroll
+                              class="nav-link">
+                            Logout
                         </Link>
                     </div>
                 </div>
