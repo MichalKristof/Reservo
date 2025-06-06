@@ -2,9 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    Log::info('Welcome page visited');
-    return view('welcome');
+Route::middleware('guest')->group(function () {
+    Route::inertia('/', 'Home')->name('home');
 });
 
 Route::get('/info', function () {

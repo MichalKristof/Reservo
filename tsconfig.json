@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "strict": true,
+        "jsx": "preserve",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "ziggy-js": [
+                "vendor/tightenco/ziggy/dist/index.es.js"
+            ]
+        }
+    },
+    "include": [
+        "resources/js/**/*",
+        "resources/**/*.ts",
+        "resources/**/*.vue",
+        "resources/shims-vue.d.ts"
+    ]
+}
