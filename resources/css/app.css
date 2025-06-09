@@ -18,7 +18,7 @@
     input[type="date"],
     input[type="time"],
     textarea {
-        @apply block w-full rounded-lg border border-slate-200 p-3 text-slate-900 shadow-sm focus:ring-2 focus:ring-inset focus:ring-[#003366] placeholder:text-slate-400 bg-white;
+        @apply block w-full rounded-lg border border-slate-200 p-3 text-slate-900 shadow-sm  placeholder:text-slate-400 bg-white;
     }
 
     label {
@@ -38,7 +38,7 @@
     }
 
     .primary-btn {
-        @apply flex w-full justify-center rounded-full bg-[#003366] px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] disabled:bg-slate-400 disabled:cursor-wait;
+        @apply flex w-full justify-center rounded-md bg-[#003366] px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] disabled:bg-slate-400 disabled:cursor-not-allowed;
     }
 
     .text-link {

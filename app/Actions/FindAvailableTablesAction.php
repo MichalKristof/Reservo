@@ -42,8 +42,8 @@ class FindAvailableTablesAction
 
         $query = Table::where('status', 'active');
 
-        if ($data->numberOfPeople !== null) {
-            $query->where('seats', '>=', $data->numberOfPeople);
+        if ($data->numberOfPeople !== 0 && $data->numberOfPeople !== null) {
+            $query->where('seats', '>=', $data->numberOfPeople)->firstOrFail();
         }
 
         return new FindAvailableTablesResultData(
