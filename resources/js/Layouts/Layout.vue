@@ -2,13 +2,12 @@
     <div class="relative">
         <header>
             <nav>
-                <div v-if="!$page.props.auth.user"  class="space-x-6">
+                <div v-if="!isAuthenticated" class="space-x-6">
                     <Link :href="route('home')" preserve-scroll class="nav-link"
                           :class="{'bg-slate-100': $page.component === 'Home'}">Home
                     </Link>
-
                 </div>
-                <div v-if="$page.props.auth.user" class="space-x-6">
+                <div v-if="isAuthenticated" class="space-x-6">
                     <Link :href="route('dashboard')" preserve-scroll class="nav-link"
                           :class="{'bg-slate-100': $page.component === 'Dashboard'}">Dashboard
                     </Link>
@@ -17,7 +16,7 @@
                     </Link>
                 </div>
                 <div class="space-x-6">
-                    <div  v-if="!$page.props.auth.user" class="flex items-center gap-2">
+                    <div v-if="!isAuthenticated" class="flex items-center gap-2">
                         <Link :href="route('register')" as="button" type="button" preserve-scroll class="nav-link"
                               :class="{'bg-slate-100': $page.component === 'Auth/Register'}">
                             Register
@@ -27,8 +26,8 @@
                             Login
                         </Link>
                     </div>
-                    <div  v-else class="flex items-center gap-2">
-                        <span class="text-white">Welcome, {{ $page.props.auth.user.name }}</span>
+                    <div v-else class="flex items-center gap-2">
+                        <span class="text-black">Welcome, {{ userName }}</span>
                         <Link :href="route('logout')" method="post" as="button" type="button" preserve-scroll
                               class="nav-link">
                             Logout
@@ -64,15 +63,18 @@
 </template>
 
 <script setup lang="ts">
-import {route} from "../../../vendor/tightenco/ziggy/src/js/index.js";
-import ToastMessage from '../Components/ToastMessage.vue'
 import {usePage} from "@inertiajs/vue3";
 import {watch} from "vue";
-import {useToast} from "../Composables/useToast";
+import {useToast} from "@/Composables/useToast";
+import {useAuth} from "@/Composables/useAuth";
+import ToastMessage from "@/Components/ToastMessage.vue";
+import {setAxiosToastHandler} from '@/axios';
 
 const page = usePage()
+const {isAuthenticated, userName} = useAuth();
 const {showToast, toasts} = useToast()
 
+setAxiosToastHandler(showToast);
 
 function closeToast(toast: any) {
     toast.visible = false
@@ -94,11 +96,11 @@ watch(
                 type: flash.type || 'success',
                 message: flash.message,
                 visible: true,
-            })
+            });
         }
     },
     {immediate: true}
-)
+);
 
 
 </script>

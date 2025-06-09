@@ -11,6 +11,7 @@ Route::middleware('guest')->group(function () {
     Route::inertia('/', 'Home')->name('home');
     Route::inertia('/register', 'Auth/Register')->name('register');
     Route::post('/register', RegisterController::class)->name('register');
+//    ->middleware('throttle:6,1')
     Route::inertia('/login', 'Auth/Login')->name('login');
     Route::post('/login', LoginController::class)->name('login');
 });
@@ -18,7 +19,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', LogoutController::class)->name('logout');
     Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
-    Route::inertia('/reservations/create', 'Reservations/ReservationCreate')->name('reservations.create');
+    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
     Route::post('/reservations/available-tables', [ReservationController::class, 'availableTables'])->name('reservations.availableTables');
 });
 

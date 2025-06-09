@@ -17,7 +17,14 @@
                 {{ option.label }}
             </option>
         </select>
-        <small class="error" v-if="message">{{ message }}</small>
+        <div v-if="message">
+            <template v-if="Array.isArray(message)">
+                <small v-for="(msg, index) in message" :key="index" class="error">{{ msg }}</small>
+            </template>
+            <template v-else>
+                <small class="error">{{ message }}</small>
+            </template>
+        </div>
     </div>
 </template>
 
@@ -27,7 +34,7 @@ defineProps({
         type: String,
         required: true
     },
-    message: String,
+    message: [String, Array],
     options: {
         type: Array as () => { value: string | number; label: string | number }[],
         required: true

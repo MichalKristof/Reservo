@@ -45,11 +45,18 @@ class HandleInertiaRequests extends Middleware
                 ]);
             },
 
-            'auth.user' => fn() => $request->user()
+            'auth' => ['user' => fn() => $request->user()
                 ? $request->user()->only('id', 'name')
                 : null,
+                'isAuthenticated' => fn() => $request->user() !== null,
+            ],
 
-            'flash' => fn() => $request->session()->get('flash'),
+            'restaurant' => config('restaurant'),
+
+            'flash' => fn() => [
+                'message' => $request->session()->get('flash.message'),
+                'type' => $request->session()->get('flash.type', 'success'),
+            ],
         ]);
     }
 }

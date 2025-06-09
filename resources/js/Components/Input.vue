@@ -4,7 +4,14 @@
         <input :class="{'ring-red-500' : message}" v-model="model" :type="type" :name="name"
                :autocomplete="autocomplete"
         />
-        <small class="error" v-if="message">{{ message }}</small>
+        <div v-if="message">
+            <template v-if="Array.isArray(message)">
+                <small v-for="(msg, index) in message" :key="index" class="error">{{ msg }}</small>
+            </template>
+            <template v-else>
+                <small class="error">{{ message }}</small>
+            </template>
+        </div>
     </div>
 </template>
 
@@ -20,7 +27,7 @@ const props = defineProps({
         type: String,
         default: 'text'
     },
-    message: String,
+    message: [String, Array],
 });
 
 const model = defineModel({

@@ -38,12 +38,10 @@
     }
 
     .primary-btn {
-        /* Pôvodné bg-[#00B29B] a hover:bg-[#00A08C] a focus:ring-[#00B29B] zmenené na #003366 a tmavší odtieň */
-        @apply flex w-full justify-center rounded-full bg-[#003366] px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#002B52] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] disabled:bg-slate-400 disabled:cursor-wait;
+        @apply flex w-full justify-center rounded-full bg-[#003366] px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] disabled:bg-slate-400 disabled:cursor-wait;
     }
 
     .text-link {
-        /* Pôvodné text-[#00B29B] a hover:text-[#00A08C] zmenené na #003366 a tmavší odtieň */
         @apply font-semibold text-[#003366] hover:text-[#002B52];
     }
 

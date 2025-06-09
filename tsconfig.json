@@ -10,6 +10,9 @@
         "skipLibCheck": true,
         "baseUrl": ".",
         "paths": {
+            "@/*": [
+                "resources/js/*"
+            ],
             "ziggy-js": [
                 "vendor/tightenco/ziggy/dist/index.es.js"
             ]
@@ -19,6 +22,8 @@
         "resources/js/**/*",
         "resources/**/*.ts",
         "resources/**/*.vue",
-        "resources/shims-vue.d.ts"
+        "resources/js/vue.d.ts",
+        "resources/js/axios.ts",
+        "resources/js/types/**/*.d.ts"
     ]
 }

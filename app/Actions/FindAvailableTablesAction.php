@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\DTO\CheckAvailabilityData;
+use App\DTO\FindAvailableTablesResultData;
 use App\Models\Table;
 use App\Models\Reservation;
 use Carbon\Carbon;
@@ -15,6 +16,8 @@ class FindAvailableTablesAction
      */
     public function __invoke(CheckAvailabilityData $data)
     {
+        $errors = [];
+
         $reservedAt = $data->reservedAt->format('Y-m-d');
         $time = $data->time;
 
@@ -26,9 +29,10 @@ class FindAvailableTablesAction
         $closingTimeStr = config('restaurant.closing_time', '22:00');
         $closingTime = Carbon::createFromFormat('Y-m-d H:i', "$reservedAt $closingTimeStr");
 
-        // TODO: return only render inertia or JSON response or find another solution
         if ($end->greaterThan($closingTime)) {
-            throw new Exception('Reservation cannot extend past closing time (22:00).');
+            $errors[] = 'The reservation time exceeds the restaurant closing time.';
+
+            return new FindAvailableTablesResultData(collect(), $errors);
         }
 
         $reservedTableIds = Reservation::where(function ($query) use ($start, $end) {
@@ -42,6 +46,9 @@ class FindAvailableTablesAction
             $query->where('seats', '>=', $data->numberOfPeople);
         }
 
-        return $query->whereNotIn('id', $reservedTableIds)->get();
+        return new FindAvailableTablesResultData(
+            $query->whereNotIn('id', $reservedTableIds)->get(),
+            $errors
+        );
     }
 }

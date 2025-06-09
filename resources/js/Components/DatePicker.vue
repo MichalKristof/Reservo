@@ -4,13 +4,19 @@
         <VueDatePicker
             :model-value="model"
             :enable-minutes="false"
-            :minutes-increment="true"
             :format="customFormatter"
             @update:modelValue="updateModelValue"
             :loading="disabled"
             :min-date="nextDay"
         />
-        <small v-if="message" class="error">{{ message }}</small>
+        <div v-if="message">
+            <template v-if="Array.isArray(message)">
+                <small v-for="(msg, index) in message" :key="index" class="error">{{ msg }}</small>
+            </template>
+            <template v-else>
+                <small class="error">{{ message }}</small>
+            </template>
+        </div>
     </div>
 </template>
 
@@ -29,7 +35,7 @@ defineProps({
         type: String,
         default: 'YYYY-MM-DD',
     },
-    message: String,
+    message: [String, Array],
     disabled: {
         type: Boolean,
         default: false,
