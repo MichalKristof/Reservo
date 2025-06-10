@@ -4,7 +4,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {

@@ -23,7 +23,7 @@ class CheckAvailabilityRequest extends FormRequest
     {
         return [
             'reserved_at' => ['sometimes', 'required', 'date', 'after_or_equal:today'],
-            'time' => ['sometimes', 'required'],
+            'time' => ['sometimes', 'required', 'nullable'],
             'duration' => ['sometimes', 'integer', 'nullable'],
             'number_of_people' => ['sometimes', 'integer', 'min:1', 'max:6', 'nullable'],
         ];

@@ -6,7 +6,7 @@ class CheckAvailabilityData
 {
     public function __construct(
         public \DateTimeInterface $reservedAt,
-        public string             $time,
+        public ?string            $time = null,
         public ?int               $duration = null,
         public ?int               $numberOfPeople = null
     )

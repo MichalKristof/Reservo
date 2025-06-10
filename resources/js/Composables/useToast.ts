@@ -11,7 +11,7 @@ export interface ToastMessage {
 
 const toasts = ref<ToastMessage[]>([]);
 
-function showToast({type = 'success', message, visible}: Omit<ToastMessage, 'id'>) {
+function showToast({type = 'success', message, visible}: Omit<ToastMessage, 'id'>): void {
     const id = Date.now();
     toasts.value.push({id, type, message, visible});
 

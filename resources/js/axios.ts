@@ -12,11 +12,15 @@ axios.interceptors.response.use(
         if (error.response) {
             const status = error.response.status;
             const data = error.response.data;
-            const isDev = import.meta.env.MODE === 'development' || process.env.NODE_ENV === 'development';
+            const isDev = import.meta.env.MODE === 'development';
 
             if (status === 422 && data.errors && toastFunction) {
-                Object.values(data.errors).flat().forEach((errorMsg: string) => {
-                    toastFunction({type: 'error', message: errorMsg, visible: true});
+                const errorMessages = Object.values(data.errors).flat() as string[];
+
+                errorMessages.forEach(errorMsg => {
+                    if (toastFunction) {
+                        toastFunction({type: 'error', message: errorMsg, visible: true});
+                    }
                 });
             } else if (status >= 500 && toastFunction) {
                 if (isDev) {

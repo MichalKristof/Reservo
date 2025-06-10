@@ -74,7 +74,13 @@ const page = usePage()
 const {isAuthenticated, userName} = useAuth();
 const {showToast, toasts} = useToast()
 
-setAxiosToastHandler(showToast);
+setAxiosToastHandler(({type, message, visible}) => {
+    showToast({
+        type: type as 'success' | 'error' | 'info' | 'warning',
+        message,
+        visible
+    });
+});
 
 function closeToast(toast: any) {
     toast.visible = false

@@ -2,10 +2,10 @@
     <Head :title="` | ${$page.component}`"/>
     <h1 class="title">Create Reservation</h1>
 
-    <div class="flex flex-col justify-between gap-4 py-4 border-b-2">
+    <div class="flex flex-col justify-between gap-4 py-4">
         <ReservationForm/>
     </div>
-    
+
     <div class="flex flex-col gap-4 mt-4">
         <div class="mt-6 text-red-600">
             {{ errorMessage }}

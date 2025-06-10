@@ -11,8 +11,11 @@ declare module '@inertiajs/core' {
         ziggy: ZiggyConfig & { location: string };
         flash: unknown;
         appName: string;
-        restaurant: object;
+        restaurant: {
+            times: string[];
+            durations: number[];
+            number_of_people: number[];
+        }
     }
 }
-
 export {};
