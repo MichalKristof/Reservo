@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ReservationAvailabilityController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +19,12 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', LogoutController::class)->name('logout');
     Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
     Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
-    Route::post('/reservations/available-tables', [ReservationController::class, 'availableTables'])->name('reservations.availableTables');
+    Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::post('/reservations/available-times', [ReservationAvailabilityController::class, 'availableTimes'])->name('reservations.availableTimes');
+    Route::post('/reservations/available-durations', [ReservationAvailabilityController::class, 'availableDurations'])->name('reservations.availableDurations');
+    Route::post('/reservations/available-people', [ReservationAvailabilityController::class, 'availablePeople'])->name('reservations.availablePeople');
 });
 
 Route::get('/info', function () {

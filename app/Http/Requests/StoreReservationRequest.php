@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CheckAvailabilityRequest extends FormRequest
+class StoreReservationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,10 @@ class CheckAvailabilityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'reserved_at' => ['sometimes', 'required', 'date', 'after_or_equal:today'],
-            'time' => ['sometimes', 'required', 'nullable'],
-            'duration' => ['sometimes', 'integer', 'nullable'],
-            'number_of_people' => ['sometimes', 'integer', 'min:1', 'max:6', 'nullable'],
+            'reserved_at' => ['required', 'date', 'after_or_equal:today'],
+            'time' => ['required', 'date_format:H:i'],
+            'duration' => ['required', 'integer'],
+            'number_of_people' => ['required', 'integer', 'min:1'],
         ];
     }
 }

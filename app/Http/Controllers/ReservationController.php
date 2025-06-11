@@ -2,15 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\FindAvailableTablesAction;
-use App\DTO\CheckAvailabilityData;
-use App\Http\Requests\CheckAvailabilityRequest;
+use App\Actions\CreateReservationAction;
+use App\Actions\GetUserReservationsAction;
+use App\DTO\ReservationData;
+use App\Http\Requests\StoreReservationRequest;
 use Exception;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ReservationController extends Controller
 {
+
+    /**
+     * Show the list of reservations.
+     */
+    public function index(GetUserReservationsAction $getUserReservationsAction): Response
+    {
+        $reservations = $getUserReservationsAction->execute();
+
+        return Inertia::render('Reservations/ReservationIndex', [
+            'reservations' => $reservations,
+        ]);
+    }
 
     /**
      * Display the reservation creation page.
@@ -25,27 +38,31 @@ class ReservationController extends Controller
     }
 
     /**
-     * Check the availability of tables based on the reservation data.
+     * Create a new reservation.
      * @throws Exception
      */
-    public function availableTables(CheckAvailabilityRequest $request, FindAvailableTablesAction $findAvailableTablesAction): \Illuminate\Http\JsonResponse
+    public function store(StoreReservationRequest $request, CreateReservationAction $createReservationAction): Response
     {
-        $data = new CheckAvailabilityData(
-            new \DateTimeImmutable($request->input('reserved_at')),
-            $request->input('time'),
-            $request->integer('duration'),
-            $request->integer('number_of_people')
-        );
+        $validated = $request->validated();
 
+        try {
+            $reservationData = ReservationData::from($validated);
 
-        $result = ($findAvailableTablesAction)($data);
+            $reservation = $createReservationAction->execute(
+                $reservationData->reservedAt,
+                $reservationData->duration,
+                $reservationData->numberOfPeople
+            );
 
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'availableTables' => $result->availableTables,
-            ],
-            'messages' => $result->messages,
-        ]);
+            return Inertia::render('Reservations/ReservationCreate', [
+                'flash' => [
+                    'type' => 'success',
+                    'message' => 'Reservation created successfully.',
+                ],
+                'reservation' => $reservation,
+            ]);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
     }
 }

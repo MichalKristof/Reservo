@@ -1,56 +1,100 @@
 <template>
-    <component
-        v-for="(stepItem, index) in formData"
-        :key="index"
-        :is="stepItem.component"
-        v-model="form[stepItem.key].value"
-        :name="stepItem.name"
-        :type="stepItem.type"
-        :options="stepItem.options"
-        :message="form.errors[stepItem.key]"
-        :disabled="form.processing"
-        class="mb-4"
-    />
+    <div class="relative">
+        <div :class="{'blur-sm pointer-events-none': loading}">
+            <component
+                v-for="(stepItem, index) in formData"
+                :key="index"
+                :is="stepItem.component"
+                v-model="form[stepItem.key]"
+                :name="stepItem.name"
+                :type="stepItem.type"
+                :options="stepItem.options"
+                :message="form.errors[stepItem.key]"
+                :disabled="loading"
+                class="mb-4"
+            />
 
-    <div class="flex justify-around gap-4">
-        <button class="primary-btn" @click="submitForm">Search</button>
+            <div v-if="!loading" class="flex justify-around gap-4">
+                <button
+                    class="primary-btn flex items-center justify-center"
+                    @click="submitForm"
+                    :disabled="loading"
+                >
+                    Reserve table
+                </button>
+            </div>
+        </div>
+
+        <div
+            v-if="loading"
+            class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-50"
+        >
+            <svg
+                class="animate-spin h-10 w-10 text-blue-600"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+            >
+                <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                ></circle>
+                <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                ></path>
+            </svg>
+        </div>
     </div>
+
 </template>
 
 <script setup lang="ts">
-import {computed, ref, reactive, watch} from 'vue'
+import {computed, ref, watch} from 'vue'
 import {useForm, usePage} from '@inertiajs/vue3';
 import DatePicker from "@/Components/DatePicker.vue";
 import SelectBox from "@/Components/SelectBox.vue";
 import axios from "axios";
+import {debounce} from 'lodash';
 
 type FormKeys = 'reserved_at' | 'time' | 'duration' | 'number_of_people';
 
-type FormField = {
-    type: string | null;
-    value: any;
-    required: boolean;
+type Option = {
+    value: string | number;
+    label: string;
 };
 
-const form = useForm<Record<FormKeys, FormField>>({
-    reserved_at: {type: null, value: null, required: true},
-    time: {type: null, value: null, required: true},
-    duration: {type: null, value: null, required: true},
-    number_of_people: {type: null, value: null, required: true},
+const emit = defineEmits(['reservationSuccess']);
+
+const page = usePage()
+const loading = ref(false);
+
+const form = useForm({
+    reserved_at: null,
+    time: null,
+    duration: null,
+    number_of_people: null,
 });
 
-const availableTimes = ref([]);
-const availableDurations = ref([]);
-const availablePeopleOptions = ref([]);
+const availableTimes = ref<Option[]>([]);
+const availableDurations = ref<Option[]>([]);
+const availablePeopleOptions = ref<Option[]>([]);
 
-const formData = ref<Array<{
-    key: FormKeys;
-    component: any;
-    name: string;
-    type?: string;
-    options?: any;
-    required: boolean;
-}>>([
+const formData = computed<
+    Array<{
+        key: FormKeys;
+        component: any;
+        name: string;
+        type?: string;
+        options?: any;
+        required: boolean;
+    }>
+>(() => [
     {
         key: 'reserved_at',
         component: DatePicker,
@@ -83,45 +127,113 @@ const formData = ref<Array<{
         required: true,
     },
 ]);
-
 const submitForm = () => {
-    console.log('Submitting form with data:', form);
+    form.post(route('reservations.store'), {
+        onSuccess: (page) => {
+            emit('reservationSuccess', page.props.reservation);
+            form.reset();
+            availableTimes.value = [];
+            availableDurations.value = [];
+            availablePeopleOptions.value = [];
+        },
+        onError: (errors) => {
+            console.log(errors);
+        }
+    });
 }
 
-watch(() => form.reserved_at.value, async (newDate) => {
+const fetchAvailableTimes = debounce(async (newDate) => {
     if (!newDate) return;
-    console.log(newDate);
-    const res = await axios.post(route('api.reservations.available-times'), {
-        reserved_at: newDate
-    });
-    availableTimes.value = res.data.map(t => ({value: t, label: t}));
-    form.time.value = null;
-    form.duration.value = null;
+    loading.value = true;
+
+    try {
+        const res = await axios.post(route('reservations.availableTimes'), {
+            reserved_at: newDate,
+        });
+
+        if (!res.data.times) return;
+
+        availableTimes.value = res.data.times.map(t => ({
+            value: t,
+            label: t,
+        }));
+
+        form.time = null;
+        form.duration = null;
+        form.number_of_people = null;
+    } catch (error) {
+        availableTimes.value = [];
+    } finally {
+        loading.value = false;
+    }
+}, 300);
+
+const fetchAvailableDurations = debounce(async (time: string) => {
+    if (!form.reserved_at || !time) return;
+    loading.value = true;
+
+    try {
+        const res = await axios.post(route('reservations.availableDurations'), {
+            reserved_at: form.reserved_at,
+            time,
+        });
+
+        const durations = res.data.durations;
+
+        if (Array.isArray(durations)) {
+            availableDurations.value = durations.map(d => ({
+                value: d,
+                label: `${d} ${d === 1 ? 'Hour' : 'Hours'}`,
+            }));
+            form.duration = null;
+            form.number_of_people = null;
+        }
+    } catch {
+        availableDurations.value = [];
+    } finally {
+        loading.value = false;
+    }
+}, 300);
+
+
+const fetchAvailablePeople = debounce(async (duration: number) => {
+    if (!form.reserved_at || !form.time || !duration) return;
+    loading.value = true;
+
+    try {
+        const res = await axios.post(route('reservations.availablePeople'), {
+            reserved_at: form.reserved_at,
+            time: form.time,
+            duration,
+        });
+
+        const peopleCounts = res.data.available_people_counts;
+
+        if (Array.isArray(peopleCounts)) {
+            availablePeopleOptions.value = peopleCounts.map(p => ({
+                value: p,
+                label: `${p} ${p === 1 ? 'Person' : 'People'}`,
+            }));
+        }
+    } catch {
+        availablePeopleOptions.value = [];
+    } finally {
+        loading.value = false;
+    }
+}, 300);
+
+watch(() => form.reserved_at, (newDate) => {
+    if (!newDate) return;
+    fetchAvailableTimes(newDate);
 });
 
-watch(() => form.time.value, async (time) => {
-    if (!form.reserved_at.value || !time) return;
-    const res = await axios.post(route('api.reservations.available-durations'), {
-        reserved_at: form.reserved_at.value,
-        time
-    });
-    availableDurations.value = res.data.map(d => ({
-        value: d,
-        label: `${d} ${d === 1 ? 'Hour' : 'Hours'}`
-    }));
-    form.duration.value = null;
+watch(() => form.time, (time) => {
+    if (!time) return;
+    fetchAvailableDurations(time);
 });
 
-watch(() => form.duration.value, async (duration) => {
-    if (!form.reserved_at.value || !form.time.value || !duration) return;
-    const res = await axios.post(route('api.reservations.available-people'), {
-        reserved_at: form.reserved_at.value,
-        time: form.time.value,
-        duration
-    });
-    availablePeopleOptions.value = res.data.map(p => ({
-        value: p,
-        label: `${p} ${p === 1 ? 'Person' : 'People'}`
-    }));
+watch(() => form.duration, (duration) => {
+    if (!duration) return;
+    fetchAvailablePeople(duration);
 });
 </script>

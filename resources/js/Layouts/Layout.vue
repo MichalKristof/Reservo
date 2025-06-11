@@ -11,8 +11,12 @@
                     <Link :href="route('dashboard')" preserve-scroll class="nav-link"
                           :class="{'bg-slate-100': $page.component === 'Dashboard'}">Dashboard
                     </Link>
+                    <Link :href="route('reservations.index')" preserve-scroll class="nav-link"
+                          :class="{'bg-slate-100': $page.component === 'Reservations/ReservationsIndex'}">Reservation
+                    </Link>
                     <Link :href="route('reservations.create')" preserve-scroll class="nav-link"
-                          :class="{'bg-slate-100': $page.component === 'Reservations/ReservationsCreate'}">Reservation
+                          :class="{'bg-slate-100': $page.component === 'Reservations/ReservationsCreate'}">Create
+                        Reservation
                     </Link>
                 </div>
                 <div class="space-x-6">
