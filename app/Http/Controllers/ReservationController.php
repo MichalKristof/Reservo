@@ -41,9 +41,9 @@ class ReservationController extends Controller
      * Create a new reservation.
      * @throws Exception
      */
-    public function store(StoreReservationRequest $request, CreateReservationAction $createReservationAction): Response
+    public function store(StoreReservationRequest $storeReservationRequest, CreateReservationAction $createReservationAction): Response
     {
-        $validated = $request->validated();
+        $validated = $storeReservationRequest->validated();
 
         try {
             $reservationData = ReservationData::from($validated);

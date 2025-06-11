@@ -12,6 +12,7 @@ class ReservationAvailabilityController extends Controller
 {
     public function availableTimes(Request $request, GetAvailableTimesAction $getAvailableTimes): JsonResponse
     {
+        // TODO: Add validation for the date format and ensure it is a future date.
         $request->validate([
             'reserved_at' => ['required', 'date'],
         ]);

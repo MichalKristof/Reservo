@@ -25,7 +25,7 @@ class ReservationSeeder extends Seeder
             'user_id' => 1,
             'table_id' => 2,
             'reserved_at' => Carbon::tomorrow()->setTime(19, 0),
-            "number_of_people" => 1,
+            "number_of_people" => 2,
             'duration' => 1,
         ]);
     }

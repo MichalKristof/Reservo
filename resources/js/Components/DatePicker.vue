@@ -7,7 +7,7 @@
             :format="customFormatter"
             @update:modelValue="updateModelValue"
             :loading="disabled"
-            :min-date="nextDay"
+            :min-date="computedMinDate"
         />
         <div v-if="message">
             <template v-if="Array.isArray(message)">
@@ -21,34 +21,39 @@
 </template>
 
 <script setup lang="ts">
+import {computed} from 'vue';
 
 const customFormatter = (date: Date) => {
-    return date.toLocaleDateString('cs-CS');
+    return date.toLocaleDateString('cs-CS').toString();
 };
 
-defineProps({
+const props = defineProps({
     name: {
         type: String,
         required: true
-    },
-    format: {
-        type: String,
-        default: 'YYYY-MM-DD',
     },
     message: [String, Array],
     disabled: {
         type: Boolean,
         default: false,
     },
+    allowPastDates: {
+        type: Boolean,
+        default: false,
+    },
 });
 
-const currentDate = new Date();
-const nextDay = new Date(currentDate);
-nextDay.setDate(currentDate.getDate() + 1);
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+tomorrow.setHours(0, 0, 0, 0);
+
+const computedMinDate = computed(() => {
+    return props.allowPastDates ? null : tomorrow;
+});
 
 const emit = defineEmits(['update:modelValue']);
 
-const updateModelValue = (value: Date) => {
+const updateModelValue = (value: string | Date) => {
     emit('update:modelValue', value);
 };
 

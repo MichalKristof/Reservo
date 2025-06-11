@@ -18,6 +18,9 @@
                           :class="{'bg-slate-100': $page.component === 'Reservations/ReservationsCreate'}">Create
                         Reservation
                     </Link>
+                    <Link :href="route('tables.index')" preserve-scroll class="nav-link"
+                          :class="{'bg-slate-100': $page.component === 'Table/TableIndex'}">Tables
+                    </Link>
                 </div>
                 <div class="space-x-6">
                     <div v-if="!isAuthenticated" class="flex items-center gap-2">

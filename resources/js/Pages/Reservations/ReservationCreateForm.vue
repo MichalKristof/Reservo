@@ -14,11 +14,11 @@
                 class="mb-4"
             />
 
-            <div v-if="!loading" class="flex justify-around gap-4">
+            <div class="flex justify-around gap-4">
                 <button
                     class="primary-btn flex items-center justify-center"
                     @click="submitForm"
-                    :disabled="loading"
+                    :disabled="loading || !isFormFilled()"
                 >
                     Reserve table
                 </button>
@@ -27,7 +27,7 @@
 
         <div
             v-if="loading"
-            class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-50"
+            class="absolute inset-0 flex items-center justify-center bg-transparent z-50"
         >
             <svg
                 class="animate-spin h-10 w-10 text-blue-600"
@@ -67,6 +67,10 @@ type FormKeys = 'reserved_at' | 'time' | 'duration' | 'number_of_people';
 type Option = {
     value: string | number;
     label: string;
+};
+
+const isFormFilled = () => {
+    return Object.values(form.data()).every(value => value !== null && value !== '');
 };
 
 const emit = defineEmits(['reservationSuccess']);
@@ -150,6 +154,7 @@ const fetchAvailableTimes = debounce(async (newDate) => {
         const res = await axios.post(route('reservations.availableTimes'), {
             reserved_at: newDate,
         });
+        console.log(res);
 
         if (!res.data.times) return;
 
@@ -214,6 +219,7 @@ const fetchAvailablePeople = debounce(async (duration: number) => {
                 value: p,
                 label: `${p} ${p === 1 ? 'Person' : 'People'}`,
             }));
+            form.number_of_people = null;
         }
     } catch {
         availablePeopleOptions.value = [];

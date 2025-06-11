@@ -38,10 +38,12 @@ class GetAvailableNumberOfPeople
             });
         });
 
-        $seatOptions = $freeTables->flatMap(function ($table) {
-            return range(1, $table->seats);
-        });
+        $maxSeats = $freeTables->pluck('seats')->max();
 
-        return $seatOptions->unique()->sort()->values()->toArray();
+        if (!$maxSeats) {
+            return [0];
+        }
+
+        return range(1, $maxSeats);
     }
 }

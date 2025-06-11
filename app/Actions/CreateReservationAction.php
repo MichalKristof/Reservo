@@ -19,7 +19,11 @@ class CreateReservationAction
      */
     public function execute(DateTimeImmutable $reservedAt, int $duration, int $numberOfPeople): Reservation
     {
-        $start = Carbon::instance($reservedAt);
+        $start = Carbon::createFromFormat(
+            'Y-m-d H:i:s',
+            $reservedAt->format('Y-m-d H:i:s'),
+            config('app.timezone')
+        );
         $end = (clone $start)->addHours($duration);
         $userId = Auth::id();
 

@@ -2,8 +2,8 @@
 
 namespace App\Actions;
 
+use App\Models\Table;
 use Carbon\Carbon;
-use App\Models\Reservation;
 
 class GetAvailableDurationsAction
 {
@@ -14,16 +14,12 @@ class GetAvailableDurationsAction
         $durations = config('restaurant.durations');
         $closingTime = Carbon::parse($reservedDate->format('Y-m-d') . ' ' . config('restaurant.closing_time'));
 
-        $reservations = Reservation::whereBetween('reserved_at', [
-            $reservedDate->copy()->startOfDay(),
-            $reservedDate->copy()->endOfDay()
-        ])->get();
-
-        $reservedTimes = $reservations->map(function ($reservation) {
-            $start = Carbon::parse($reservation->reserved_at);
-            $end = $start->copy()->addHours($reservation->duration);
-            return ['start' => $start, 'end' => $end];
-        });
+        $tables = Table::with(['reservations' => function ($query) use ($reservedDate) {
+            $query->whereBetween('reserved_at', [
+                $reservedDate->copy()->startOfDay(),
+                $reservedDate->copy()->endOfDay()
+            ]);
+        }])->get();
 
         $availableDurations = [];
 
@@ -34,11 +30,17 @@ class GetAvailableDurationsAction
                 continue;
             }
 
-            $overlaps = $reservedTimes->contains(function ($reserved) use ($start, $end) {
-                return $start->lt($reserved['end']) && $end->gt($reserved['start']);
+            $hasAvailableTable = $tables->contains(function ($table) use ($start, $end) {
+                $hasConflict = $table->reservations->contains(function ($reservation) use ($start, $end) {
+                    $resStart = Carbon::parse($reservation->reserved_at);
+                    $resEnd = $resStart->copy()->addHours($reservation->duration);
+                    return $start->lt($resEnd) && $end->gt($resStart);
+                });
+
+                return !$hasConflict;
             });
 
-            if (!$overlaps) {
+            if ($hasAvailableTable) {
                 $availableDurations[] = $duration;
             }
         }
@@ -46,4 +48,5 @@ class GetAvailableDurationsAction
         return $availableDurations;
     }
 }
+
 
