@@ -6,50 +6,37 @@ use App\Actions\GetAvailableDurationsAction;
 use App\Actions\GetAvailableTimesAction;
 use App\Actions\GetAvailableNumberOfPeople;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use App\Http\Requests\AvailableReservationRequest;
 
 class ReservationAvailabilityController extends Controller
 {
-    public function availableTimes(Request $request, GetAvailableTimesAction $getAvailableTimes): JsonResponse
+    public function availableTimes(AvailableReservationRequest $request, GetAvailableTimesAction $getAvailableTimes): JsonResponse
     {
-        // TODO: Add validation for the date format and ensure it is a future date.
-        $request->validate([
-            'reserved_at' => ['required', 'date'],
-        ]);
-
-        $times = $getAvailableTimes->execute($request->input('reserved_at'));
+        $reservedAt = $request->getReservedAt();
 
         return response()->json([
-            'times' => $times,
+            'times' => $getAvailableTimes->execute($reservedAt),
         ]);
     }
 
-    public function availableDurations(Request $request, GetAvailableDurationsAction $availableDurationsAction): JsonResponse
+    public function availableDurations(AvailableReservationRequest $request, GetAvailableDurationsAction $availableDurationsAction): JsonResponse
     {
-        $request->validate([
-            'reserved_at' => ['required', 'date'],
-            'time' => ['required', 'date_format:H:i'],
-        ]);
-
-        $durations = $availableDurationsAction->execute($request->input('reserved_at'), $request->input('time'));
-
         return response()->json([
-            'durations' => $durations,
+            'durations' => $availableDurationsAction->execute(
+                $request->getReservedAt(),
+                $request->getTime()
+            ),
         ]);
     }
 
-    public function availablePeople(Request $request, GetAvailableNumberOfPeople $getMaxSeatsForTimeAction): JsonResponse
+    public function availablePeople(AvailableReservationRequest $request, GetAvailableNumberOfPeople $getMaxSeatsForTimeAction): JsonResponse
     {
-        $request->validate([
-            'reserved_at' => ['required', 'date'],
-            'time' => ['required', 'date_format:H:i'],
-            'duration' => ['required', 'integer', 'min:1'],
-        ]);
-
-        $peopleOptions = $getMaxSeatsForTimeAction->execute($request->input('reserved_at'), $request->input('time'), $request->input('duration'));
-
         return response()->json([
-            'available_people_counts' => $peopleOptions,
+            'available_people_counts' => $getMaxSeatsForTimeAction->execute(
+                $request->getReservedAt(),
+                $request->getTime(),
+                $request->getDuration()
+            ),
         ]);
     }
 }

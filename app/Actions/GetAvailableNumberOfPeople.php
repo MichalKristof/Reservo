@@ -5,10 +5,11 @@ namespace App\Actions;
 use Carbon\Carbon;
 use App\Models\Reservation;
 use App\Models\Table;
+use DateTimeImmutable;
 
 class GetAvailableNumberOfPeople
 {
-    public function execute(string $date, string $time, int $durationHours): array
+    public function execute(DateTimeImmutable $date, string $time, int $durationHours): array
     {
         $reservedDate = Carbon::parse($date)->startOfDay();
         $start = Carbon::parse("{$reservedDate->format('Y-m-d')} {$time}");

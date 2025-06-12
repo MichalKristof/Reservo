@@ -4,10 +4,11 @@ namespace App\Actions;
 
 use App\Models\Table;
 use Carbon\Carbon;
+use DateTimeImmutable;
 
 class GetAvailableDurationsAction
 {
-    public function execute(string $date, string $time): array
+    public function execute(DateTimeImmutable $date, string $time): array
     {
         $reservedDate = Carbon::parse($date)->startOfDay();
         $start = Carbon::parse($reservedDate->format('Y-m-d') . ' ' . $time);

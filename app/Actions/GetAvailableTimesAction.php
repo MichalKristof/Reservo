@@ -4,10 +4,11 @@ namespace App\Actions;
 
 use App\Models\Table;
 use Carbon\Carbon;
+use DateTimeImmutable;
 
 class GetAvailableTimesAction
 {
-    public function execute(string $date): array
+    public function execute(DateTimeImmutable $date): array
     {
         $reservedDate = Carbon::parse($date)->startOfDay();
         $availableTimes = collect(config('restaurant.times'));
