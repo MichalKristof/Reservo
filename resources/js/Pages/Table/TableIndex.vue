@@ -1,10 +1,9 @@
 <template>
+    <Head :title="`| ${$page.component}`"/>
     <div class="p-4">
-        <h1 class="text-xl font-bold mb-4">Table occupancy</h1>
-
         <div class="flex flex-col gap-3 mb-6">
             <div class="flex items-center gap-2">
-                <label for="restaurant" class="font-semibold">Opening hours:</label>
+                <label for="restaurant" class="font-semibold text-xl">Opening hours:</label>
                 <span class="text-gray-700">{{ config?.opening_time + "-" + config?.closing_time }}</span>
             </div>
         </div>
@@ -16,34 +15,38 @@
             name="Select Date"
         />
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div v-for="table in tables" :key="table.id" class="border p-4 rounded shadow">
-                <h2 class="font-semibold">{{ table.name }} ({{ table.seats }} seats)</h2>
-                <div>
-                    <div class="text-xs mb-1 text-gray-500">Occupancy</div>
-                    <div class="flex gap-[2px]">
+        <div class="grid grid-cols-1 gap-4">
+            <div v-for="table in tables" :key="table.id" class="border border-slate-300 p-4 rounded-md shadow-xl">
+                <div class="w-full flex justify-between text-lg fw-semibold">
+                    <span>{{ table.name }}</span>
+                    <span class="text-gray-500">Capacity: {{ table.seats }}</span>
+                </div>
+                <div class="flex flex-col mt-3">
+                    <div class="text-base mb-1 text-gray-500">Occupancy</div>
+                    <div class="flex gap-1">
                         <div
                             v-for="hour in hours"
                             :key="hour"
-                            class="w-6 h-4 text-center text-[10px] leading-4"
+                            class="px-3 py-2.5 rounded-md text-center text-sm"
                             :class="{
-                                'bg-green-200': !isHourReserved(hour, table.reservations),
-                                'bg-red-500 text-white': isHourReserved(hour, table.reservations)
+                                'bg-green-400': !isHourReserved(hour, table.reservations),
+                                'bg-orange-400 text-white': isHourReserved(hour, table.reservations)
                             }"
                             :title="`${hour}:00`"
                         >
                             {{ hour }}
                         </div>
                     </div>
-                    <ul class="flex flex-col gap-5 mt-3">
+                    <span class="text-base mb-1 text-gray-500  mt-3">Reservations {{ table.reservations.length }}</span>
+                    <ul v-if="table.reservations.length > 0" class="flex flex-col gap-5 mt-3">
                         <li
                             v-for="res in table.reservations"
                             :key="res.id"
-                            class="border-1 p-2 rounded-md"
+                            class="border border-slate-200 p-2 rounded-md shadow-sm bg-white flex items-center justify-between"
                         >
                             <div class="flex flex-col">
-                                <span>🕒 <strong>{{ res.reserved_at }}</strong></span>
-                                <span>Duration of reservation: <strong>{{ res.duration }}h</strong></span>
+                                <span><strong>{{ res.reserved_at }}</strong></span>
+                                <span>Duration: <strong>{{ res.duration }}h</strong></span>
                                 <span>Number of people: <strong>{{ res.number_of_people }}</strong></span>
                             </div>
                         </li>
@@ -61,7 +64,7 @@ import {router, usePage} from '@inertiajs/vue3';
 
 const page = usePage();
 const date = ref();
-const tables = ref([]);
+const tables = ref({});
 const config = ref();
 
 const parseHour = (timeStr: string): number => parseInt(timeStr.split(':')[0]);
@@ -90,14 +93,14 @@ const onDateChange = (newDate: Date) => {
     loadData(newDate);
 };
 
-const loadData = async (selectedDate: string | Date) => {
-    await router.get(route('tables.show'), {date: selectedDate}, {
+const loadData = (selectedDate: string | Date) => {
+    router.get(route('tables.show'), {date: selectedDate}, {
         preserveScroll: true,
         preserveState: false,
     });
 };
 const fetchInertiaProps = () => {
-    tables.value = page.props.tables || [];
+    tables.value = page.props.tables || {};
 };
 
 onMounted(() => {
@@ -106,8 +109,6 @@ onMounted(() => {
     }
     if (page.props.selectedDate) {
         date.value = new Date(page.props.selectedDate);
-    } else {
-        date.value = new Date();
     }
     fetchInertiaProps();
 });

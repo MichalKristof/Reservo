@@ -20,14 +20,17 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', LogoutController::class)->name('logout');
     Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
-    Route::get('/tables', [TableController::class, 'index'])->name('tables.index');
-    Route::get('/tables/show', [TableController::class, 'show'])->name('tables.show');
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
     Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
     Route::post('/reservations/available-times', [ReservationAvailabilityController::class, 'availableTimes'])->name('reservations.availableTimes');
     Route::post('/reservations/available-durations', [ReservationAvailabilityController::class, 'availableDurations'])->name('reservations.availableDurations');
     Route::post('/reservations/available-people', [ReservationAvailabilityController::class, 'availablePeople'])->name('reservations.availablePeople');
+
+    Route::middleware('is_admin')->group(function () {
+        Route::get('/tables', [TableController::class, 'index'])->name('tables.index');
+        Route::get('/tables/show', [TableController::class, 'show'])->name('tables.show');
+    });
 });
 
 Route::get('/info', function () {

@@ -7,6 +7,8 @@ declare module '@inertiajs/core' {
                 id: number;
                 name: string;
             } | null;
+            isAuthenticated: boolean;
+            isAdmin: boolean;
         };
         ziggy: ZiggyConfig & { location: string };
         flash: unknown;

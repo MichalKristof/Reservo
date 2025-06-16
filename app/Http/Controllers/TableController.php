@@ -17,10 +17,7 @@ class TableController extends Controller
      */
     public function index(): Response
     {
-        return Inertia::render('Table/TableIndex', [
-            'selectedDate' => now()->toDateString(),
-            'tables' => [],
-        ]);
+        return Inertia::render('Table/TableIndex');
     }
 
     /**

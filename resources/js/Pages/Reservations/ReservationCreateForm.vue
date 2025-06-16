@@ -1,6 +1,6 @@
 <template>
     <div class="relative">
-        <div :class="{'blur-sm pointer-events-none': loading}">
+        <div :class="{'blur-sm pointer-events-none': loading}" class="form">
             <component
                 v-for="(stepItem, index) in formData"
                 :key="index"
@@ -11,8 +11,13 @@
                 :options="stepItem.options"
                 :message="form.errors[stepItem.key]"
                 :disabled="loading"
-                class="mb-4"
             />
+
+            <div v-if="fetchDataError" class="flex justify-between items-center mb-4">
+                <p class="text-slate-600">
+                    <span class="text-red-500">{{ fetchDataError }}</span>
+                </p>
+            </div>
 
             <div class="flex justify-around gap-4">
                 <button
@@ -77,6 +82,7 @@ const emit = defineEmits(['reservationSuccess']);
 
 const page = usePage()
 const loading = ref(false);
+const fetchDataError = ref<string | null>(null);
 
 const form = useForm({
     reserved_at: null,
@@ -149,14 +155,20 @@ const submitForm = () => {
 const fetchAvailableTimes = debounce(async (newDate) => {
     if (!newDate) return;
     loading.value = true;
+    fetchDataError.value = null;
 
     try {
         const res = await axios.post(route('reservations.availableTimes'), {
             reserved_at: newDate,
         });
-        console.log(res);
 
         if (!res.data.times) return;
+
+        if (Array.isArray(res.data.times) && res.data.times.length === 0) {
+            fetchDataError.value = 'Sorry, No available times for this date. Please choose another date.';
+            availableTimes.value = [];
+            return;
+        }
 
         availableTimes.value = res.data.times.map(t => ({
             value: t,

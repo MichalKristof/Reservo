@@ -49,6 +49,7 @@ class HandleInertiaRequests extends Middleware
                 ? $request->user()->only('id', 'name')
                 : null,
                 'isAuthenticated' => fn() => $request->user() !== null,
+                'isAdmin' => fn() => $request->user() && $request->user()->isAdmin(),
             ],
 
             'restaurant' => config('restaurant'),

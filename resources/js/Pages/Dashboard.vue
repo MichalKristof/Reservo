@@ -1,7 +1,18 @@
 <template>
-    <Head :title="` | ${$page.component}`"/>
-    <div>
-        <h1>this is dashboard</h1>
+    <Head :title="`| ${$page.component}`"/>
+    <h1 class="title">Welcome to Reservo {{ $page.props.auth.user.name }}</h1>
+    <div class="flex w-full justify-center align-items-center">
+        <img src="/public/images/reservo-logo-512x512.png" alt="Reservo Logo" class="w-auto"/>
+    </div>
+
+    <div class="flex justify-around items-center gap-5">
+        <Link :href="route('reservations.index')" as="button" type="button" class="primary-btn" preserve-scroll>
+            Reservations
+        </Link>
+
+        <Link :href="route('reservations.create')" as="button" type="button" class="primary-btn" preserve-scroll>
+            Create Reservations
+        </Link>
     </div>
 </template>
 

@@ -12,13 +12,13 @@
                           :class="{'bg-slate-100': $page.component === 'Dashboard'}">Dashboard
                     </Link>
                     <Link :href="route('reservations.index')" preserve-scroll class="nav-link"
-                          :class="{'bg-slate-100': $page.component === 'Reservations/ReservationsIndex'}">Reservation
+                          :class="{'bg-slate-100': $page.component === 'Reservations/ReservationIndex'}">Reservation
                     </Link>
                     <Link :href="route('reservations.create')" preserve-scroll class="nav-link"
-                          :class="{'bg-slate-100': $page.component === 'Reservations/ReservationsCreate'}">Create
+                          :class="{'bg-slate-100': $page.component === 'Reservations/ReservationCreate'}">Create
                         Reservation
                     </Link>
-                    <Link :href="route('tables.index')" preserve-scroll class="nav-link"
+                    <Link v-if="isAdmin" :href="route('tables.index')" preserve-scroll class="nav-link"
                           :class="{'bg-slate-100': $page.component === 'Table/TableIndex'}">Tables
                     </Link>
                 </div>
@@ -34,7 +34,7 @@
                         </Link>
                     </div>
                     <div v-else class="flex items-center gap-2">
-                        <span class="text-black">Welcome, {{ userName }}</span>
+                        <span class="text-base">Logged as <strong>{{ user?.name }}</strong></span>
                         <Link :href="route('logout')" method="post" as="button" type="button" preserve-scroll
                               class="nav-link">
                             Logout
@@ -78,7 +78,7 @@ import ToastMessage from "@/Components/ToastMessage.vue";
 import {setAxiosToastHandler} from '@/axios';
 
 const page = usePage()
-const {isAuthenticated, userName} = useAuth();
+const {isAdmin, isAuthenticated, user} = useAuth();
 const {showToast, toasts} = useToast()
 
 setAxiosToastHandler(({type, message, visible}) => {

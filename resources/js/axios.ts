@@ -6,7 +6,7 @@ const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('c
 if (token) {
     axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
 } else {
-    console.warn('⚠️ CSRF token not found in <meta> tag');
+    console.warn('CSRF token not found in <meta> tag');
 }
 
 export function setAxiosToastHandler(showToast: (params: { type: string; message: string; visible: boolean }) => void) {
