@@ -178,6 +178,8 @@ const fetchAvailableTimes = debounce(async (newDate) => {
         form.time = null;
         form.duration = null;
         form.number_of_people = null;
+        availableDurations.value = [];
+        availablePeopleOptions.value = [];
     } catch (error) {
         availableTimes.value = [];
     } finally {
@@ -205,6 +207,7 @@ const fetchAvailableDurations = debounce(async (time: string) => {
             form.duration = null;
             form.number_of_people = null;
         }
+        availablePeopleOptions.value = [];
     } catch {
         availableDurations.value = [];
     } finally {

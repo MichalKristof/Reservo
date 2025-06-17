@@ -84,6 +84,18 @@ services:
     networks:
       - laravel-development
 
+  mysql_test:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: app_testing
+      MYSQL_USER: laravel_test
+      MYSQL_PASSWORD: secret_test
+      MYSQL_ROOT_PASSWORD: rootsecret_test
+    volumes:
+      - mysql-data-testing:/var/lib/mysql
+    networks:
+      - laravel-development
+
   redis:
     image: redis:alpine
     ports:
@@ -93,6 +105,9 @@ services:
 
 networks:
   laravel-development:
+    driver: bridge
 
 volumes:
   mysql-data-development:
+  mysql-data-testing:
+    driver: local

@@ -29,7 +29,6 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('is_admin')->group(function () {
         Route::get('/tables', [TableController::class, 'index'])->name('tables.index');
-        Route::get('/tables/show', [TableController::class, 'show'])->name('tables.show');
     });
 });
 

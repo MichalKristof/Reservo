@@ -29,6 +29,7 @@ class GetTableOccupancyForDateAction
                         'reserved_at' => $res->reserved_at,
                         'duration' => $res->duration,
                         'number_of_people' => $res->number_of_people,
+                        'user_email' => $res->user->email,
                     ];
                 }),
             ];

@@ -2,12 +2,14 @@
     <div class="w-full mb-6">
         <label>{{ name }}</label>
         <VueDatePicker
+            :text-input="config"
             :model-value="model"
-            :enable-minutes="false"
             :format="customFormatter"
             @update:modelValue="updateModelValue"
             :loading="disabled"
             :min-date="computedMinDate"
+            :auto-apply="true"
+            :enable-time-picker="false"
         />
         <div v-if="message">
             <template v-if="Array.isArray(message)">
@@ -25,6 +27,24 @@ import {computed} from 'vue';
 
 const customFormatter = (date: Date) => {
     return date.toLocaleDateString('cs-CS').toString();
+};
+
+interface TextInputOptions {
+    enterSubmit?: boolean;
+    tabSubmit?: boolean;
+    openMenu?: 'open' | 'toggle' | boolean;
+    rangeSeparator?: string;
+    selectOnFocus?: boolean;
+    format?: string | string[] | ((value: string) => Date | null);
+    escClose?: boolean;
+}
+
+const config: TextInputOptions = {
+    enterSubmit: true,
+    tabSubmit: true,
+    openMenu: 'toggle',
+    selectOnFocus: true,
+    escClose: true,
 };
 
 const props = defineProps({

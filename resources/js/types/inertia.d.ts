@@ -17,7 +17,24 @@ declare module '@inertiajs/core' {
             times: string[];
             durations: number[];
             number_of_people: number[];
+            opening_time: string;
+            closing_time: string;
         }
+        selectedDate: string;
+        tables: array<{
+            id: number;
+            name: string;
+            seats: number;
+            reservations: Array<{
+                id: number;
+                reserved_at: string;
+                duration: number;
+                number_of_people: number;
+                user: {
+                    email: string;
+                }
+            }>;
+        }>
     }
 }
 export {};

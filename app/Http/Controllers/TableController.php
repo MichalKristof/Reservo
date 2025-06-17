@@ -11,27 +11,21 @@ use Inertia\Response;
 class TableController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index(): Response
-    {
-        return Inertia::render('Table/TableIndex');
-    }
-
-    /**
      * Show the list of active tables with reservations.
      */
-    public function show(TableOccupancyRequest $tableOccupancyRequest, GetTableOccupancyForDateAction $action): Response
+    public function index(TableOccupancyRequest $tableOccupancyRequest, GetTableOccupancyForDateAction $action): Response
     {
         $validated = $tableOccupancyRequest->validated();
 
-        $date = TableOccupancyData::from($validated);
+        if (isset($validated['date'])) {
+            $date = TableOccupancyData::from($validated);
 
-        return Inertia::render('Table/TableIndex', [
-            'selectedDate' => $date->date->format('Y-m-d'),
-            'tables' => $action->execute($date->date),
-        ]);
+            return Inertia::render('Table/TableIndex', [
+                'selectedDate' => $date->date->format('Y-m-d'),
+                'tables' => $action->execute($date->date),
+            ]);
+        }
+
+        return Inertia::render('Table/TableIndex');
     }
 }

@@ -5,13 +5,13 @@
         <img src="/public/images/reservo-logo-512x512.png" alt="Reservo Logo" class="w-auto"/>
     </div>
 
-    <div class="flex justify-around items-center gap-5">
+    <div class="flex justify-center items-center gap-5">
         <Link :href="route('reservations.index')" as="button" type="button" class="primary-btn" preserve-scroll>
             Reservations
         </Link>
 
         <Link :href="route('reservations.create')" as="button" type="button" class="primary-btn" preserve-scroll>
-            Create Reservations
+            Create Reservation
         </Link>
     </div>
 </template>

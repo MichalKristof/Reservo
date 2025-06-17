@@ -2,6 +2,11 @@
     <div class="relative">
         <header>
             <nav>
+                <div class="flex flex-row items-center">
+                    <Link :href="route('home')" class="nav-link" preserve-scroll>
+                        <img src="/public/images/reservo-logo-192x192.png" alt="Reservo Logo" class="h-20 w-auto"/>
+                    </Link>
+                </div>
                 <div v-if="!isAuthenticated" class="space-x-6">
                     <Link :href="route('home')" preserve-scroll class="nav-link"
                           :class="{'bg-slate-100': $page.component === 'Home'}">Home
@@ -34,7 +39,11 @@
                         </Link>
                     </div>
                     <div v-else class="flex items-center gap-2">
-                        <span class="text-base">Logged as <strong>{{ user?.name }}</strong></span>
+                        <div class="flex flex-row items-center gap-1">
+                            <img src="/public/images/person.svg" alt="person" class="w-4 h-4"/>
+                            <span class="text-base text-slate-600">{{ user?.name }}</span>
+                        </div>
+
                         <Link :href="route('logout')" method="post" as="button" type="button" preserve-scroll
                               class="nav-link">
                             Logout

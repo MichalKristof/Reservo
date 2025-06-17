@@ -4,7 +4,7 @@
         <img src="/public/images/reservo-logo-192x192.png" alt="Reservo Logo" class="w-auto"/>
     </div>
     <div class="w-2/4 mx-auto">
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="form">
             <h1 class="title">Register</h1>
             <Input name="name" v-model="form.name" :message="form.errors.name"/>
             <Input name="email" v-model="form.email" type="email" :message="form.errors.email"/>

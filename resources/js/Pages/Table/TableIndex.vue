@@ -8,6 +8,7 @@
             </div>
         </div>
 
+
         <DatePicker
             v-model="date"
             @update:modelValue="onDateChange"
@@ -15,8 +16,9 @@
             name="Select Date"
         />
 
-        <div class="grid grid-cols-1 gap-4">
-            <div v-for="table in tables" :key="table.id" class="border border-slate-300 p-4 rounded-md shadow-xl">
+        <div class="relative grid grid-cols-1 lg:grid-cols-2 gap-4 min-h-[300px]">
+            <div v-if="!loading" v-for="table in tables" :key="table.id"
+                 class="border border-slate-300 p-4 rounded-md shadow-xl">
                 <div class="w-full flex justify-between text-lg fw-semibold">
                     <span>{{ table.name }}</span>
                     <span class="text-gray-500">Capacity: {{ table.seats }}</span>
@@ -45,27 +47,55 @@
                             class="border border-slate-200 p-2 rounded-md shadow-sm bg-white flex items-center justify-between"
                         >
                             <div class="flex flex-col">
-                                <span><strong>{{ res.reserved_at }}</strong></span>
-                                <span>Duration: <strong>{{ res.duration }}h</strong></span>
-                                <span>Number of people: <strong>{{ res.number_of_people }}</strong></span>
+                                <p><strong>{{ res.reserved_at }}</strong></p>
+                                <p><strong>Duration: </strong>{{ res.duration }} hour(s)</p>
+                                <p><strong>Number of people: </strong>{{ res.number_of_people }}</p>
+                                <p><strong>Contact person:</strong> {{ res.user_email }}</p>
                             </div>
                         </li>
                     </ul>
                 </div>
+            </div>
+
+            <div
+                v-if="loading"
+                class="absolute inset-0 flex items-center justify-center bg-transparent z-50"
+            >
+                <svg
+                    class="animate-spin h-10 w-10 text-blue-600"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                >
+                    <circle
+                        class="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        stroke-width="4"
+                    ></circle>
+                    <path
+                        class="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    ></path>
+                </svg>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, computed} from 'vue';
+import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
 import DatePicker from "@/Components/DatePicker.vue";
 import {router, usePage} from '@inertiajs/vue3';
 
 const page = usePage();
 const date = ref();
-const tables = ref({});
-const config = ref();
+const tables = ref(computed(() => page.props.tables));
+const config = ref(computed(() => page.props.restaurant ?? {}));
+const loading = ref(true);
 
 const parseHour = (timeStr: string): number => parseInt(timeStr.split(':')[0]);
 
@@ -93,23 +123,22 @@ const onDateChange = (newDate: Date) => {
     loadData(newDate);
 };
 
-const loadData = (selectedDate: string | Date) => {
-    router.get(route('tables.show'), {date: selectedDate}, {
+const loadData = (selectedDate: Date) => {
+    loading.value = true;
+    const formattedDate = selectedDate.toISOString().split('T')[0];
+    router.get(route('tables.index'), {date: formattedDate}, {
         preserveScroll: true,
         preserveState: false,
     });
 };
-const fetchInertiaProps = () => {
-    tables.value = page.props.tables || {};
-};
 
 onMounted(() => {
-    if (page.props.restaurant) {
-        config.value = page.props.restaurant;
-    }
-    if (page.props.selectedDate) {
-        date.value = new Date(page.props.selectedDate);
-    }
-    fetchInertiaProps();
+    date.value = page.props.selectedDate ? new Date(page.props.selectedDate) : null;
+    loading.value = false;
+});
+
+onBeforeUnmount(() => {
+    date.value = null;
+    loading.value = false;
 });
 </script>

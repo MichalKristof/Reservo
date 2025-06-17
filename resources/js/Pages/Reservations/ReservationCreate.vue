@@ -14,15 +14,15 @@
             </p>
 
             <ul class="space-y-2 text-slate-800">
-                <li><strong>Reservation ID:</strong> {{ createdReservation.id }}</li>
-                <li><strong>Duration:</strong> {{ createdReservation.duration }} hour(s)</li>
-                <li><strong>Number of People {{ createdReservation.number_of_people }}</strong></li>
+                <li><strong>Reservation ID: </strong>{{ createdReservation.id }}</li>
+                <li><strong>Duration: </strong>{{ createdReservation.duration }} hour(s)</li>
+                <li><strong>Number of People: </strong>{{ createdReservation.number_of_people }}</li>
             </ul>
         </div>
 
         <div class="flex flex-col sm:flex-row gap-4">
-            <Link :href="route('dashboard')" class="primary-btn sm:w-auto">
-                Go to Dashboard
+            <Link :href="route('reservations.index')" class="primary-btn sm:w-auto">
+                Go to my Reservations
             </Link>
             <Link :href="route('reservations.create')" class="primary-btn sm:w-auto">
                 Make Another Reservation

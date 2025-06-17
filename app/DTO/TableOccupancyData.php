@@ -16,7 +16,7 @@ class TableOccupancyData
         DateTimeImmutable $date,
     )
     {
-        $this->date = $date;
+        $this->date = $date->setTime(0, 0);
     }
 
     /**
@@ -24,11 +24,9 @@ class TableOccupancyData
      */
     public static function from(array $data): self
     {
-        $dateObj = new \DateTimeImmutable($data['date']);
+        $dateObj = new \DateTimeImmutable($data['date'] ?? 'today');
 
-        return new self(
-            date: $dateObj,
-        );
+        return new self($dateObj->setTime(0, 0));
     }
 
 }
