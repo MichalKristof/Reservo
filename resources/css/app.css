@@ -1,9 +1,22 @@
 @import "tailwindcss";
 
+@theme {
+    --breakpoint-3xl: 1920px;
+    --breakpoint-2xl: 1536px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-md: 768px;
+    --breakpoint-sm: 640px;
+    --breakpoint-xs: 480px;
+    --color-primary: #3E5C50;
+    --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
+    --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
+}
+
 @layer base {
     body {
         font-family: "Poppins", sans-serif;
-        color: #003366;
+        color: black;
     }
 }
 
@@ -19,19 +32,19 @@
     input[type="time"],
     select,
     textarea {
-        @apply block w-full rounded-lg border border-slate-200 p-3 text-slate-900 shadow-sm  placeholder:text-slate-400 bg-white;
+        @apply block w-full rounded-lg border border-slate-400 p-2 text-slate-600 shadow-md  placeholder:text-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-offset-0 focus:ring-primary transition;
     }
 
     label {
-        @apply block text-sm font-medium leading-6 text-slate-700 mb-1;
+        @apply block text-sm font-medium leading-6 text-slate-700;
     }
 
     header {
-        @apply bg-white shadow-sm border-b border-slate-100;
+        @apply bg-primary w-full top-0 start-0 border-b border-gray-200
     }
 
     nav {
-        @apply max-w-screen-lg mx-auto flex items-center justify-around;
+        @apply max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2;
     }
 
     main {
@@ -39,15 +52,19 @@
     }
 
     .primary-btn {
-        @apply flex w-auto justify-center rounded-md bg-[#003366] px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] disabled:bg-slate-400 disabled:cursor-not-allowed;
+        @apply flex w-auto justify-center rounded-md bg-primary px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003366] disabled:bg-slate-400 disabled:cursor-not-allowed;
     }
 
     .text-link {
-        @apply font-semibold text-[#003366] hover:text-[#002B52];
+        @apply font-semibold text-blue-400 hover:text-primary transition;
     }
 
     .nav-link {
-        @apply text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md px-4 py-2 text-sm font-medium transition;
+        @apply text-slate-700 bg-slate-50 hover:bg-primary hover:text-slate-50 rounded-md px-4 py-2 text-sm font-medium transition;
+    }
+
+    .nav-link.active {
+        @apply bg-primary text-slate-50 border border-white;
     }
 
     .form {

@@ -4,7 +4,6 @@
         <select
             v-model="model"
             :name="name"
-            class="w-full border border-gray-300 rounded px-3 py-2"
             :disabled="disabled"
             :class="{'ring-red-500': message}"
         >

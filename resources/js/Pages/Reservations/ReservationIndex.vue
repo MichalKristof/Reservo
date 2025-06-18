@@ -26,12 +26,14 @@
 
         <div v-if="pastReservations.length > 0" class="mt-10">
             <h2 class="text-xl font-semibold mb-4">Past Reservations</h2>
-            <div v-for="reservation in pastReservations" :key="reservation.id"
-                 class="border border-slate-50 bg-slate-200 shadow-md p-3 rounded-md mb-4">
-                <p><strong>#</strong> {{ reservation.table.name }}</p>
-                <p><strong>Reserved:</strong> {{ reservation.reserved_at }}</p>
-                <p><strong>Duration:</strong> {{ reservation.duration + "Hours" }}</p>
-                <p><strong>Number Of People</strong> {{ reservation.number_of_people }}</p>
+            <div class="grid grid-cols-2 gap-5">
+                <div v-for="reservation in pastReservations" :key="reservation.id"
+                     class="border border-slate-50 bg-slate-50 shadow-lg p-3 rounded-md mb-4">
+                    <p><strong>{{ reservation.table.name }}</strong></p>
+                    <p><strong>Reserved:</strong> {{ reservation.reserved_at }}</p>
+                    <p><strong>Duration:</strong> {{ reservation.duration + "Hours" }}</p>
+                    <p><strong>Number Of People</strong> {{ reservation.number_of_people }}</p>
+                </div>
             </div>
         </div>
     </div>

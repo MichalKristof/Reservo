@@ -2,39 +2,34 @@
     <div class="relative">
         <header>
             <nav>
-                <div class="flex flex-row items-center">
-                    <Link :href="route('home')" class="nav-link" preserve-scroll>
-                        <img src="/public/images/reservo-logo-192x192.png" alt="Reservo Logo" class="h-20 w-auto"/>
-                    </Link>
-                </div>
-                <div v-if="!isAuthenticated" class="space-x-6">
-                    <Link :href="route('home')" preserve-scroll class="nav-link"
-                          :class="{'bg-slate-100': $page.component === 'Home'}">Home
-                    </Link>
-                </div>
+                <Link :href="route('home')" class="flex items-center space-x-3 rtl:space-x-reverse">
+                    <img src="/public/images/reservo_logo.jpeg" alt="Reservo Logo" class="h-8 rounded-md"/>
+
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Reservo</span>
+                </Link>
                 <div v-if="isAuthenticated" class="space-x-6">
                     <Link :href="route('dashboard')" preserve-scroll class="nav-link"
-                          :class="{'bg-slate-100': $page.component === 'Dashboard'}">Dashboard
+                          :class="{'active': $page.component === 'Dashboard'}">Dashboard
                     </Link>
                     <Link :href="route('reservations.index')" preserve-scroll class="nav-link"
-                          :class="{'bg-slate-100': $page.component === 'Reservations/ReservationIndex'}">Reservation
+                          :class="{'active': $page.component === 'Reservations/ReservationIndex'}">Reservation
                     </Link>
                     <Link :href="route('reservations.create')" preserve-scroll class="nav-link"
-                          :class="{'bg-slate-100': $page.component === 'Reservations/ReservationCreate'}">Create
+                          :class="{'active': $page.component === 'Reservations/ReservationCreate'}">Create
                         Reservation
                     </Link>
                     <Link v-if="isAdmin" :href="route('tables.index')" preserve-scroll class="nav-link"
-                          :class="{'bg-slate-100': $page.component === 'Table/TableIndex'}">Tables
+                          :class="{'active': $page.component === 'Table/TableIndex'}">Tables
                     </Link>
                 </div>
                 <div class="space-x-6">
                     <div v-if="!isAuthenticated" class="flex items-center gap-2">
                         <Link :href="route('register')" as="button" type="button" preserve-scroll class="nav-link"
-                              :class="{'bg-slate-100': $page.component === 'Auth/Register'}">
+                              :class="{'active': $page.component === 'Auth/Register'}">
                             Register
                         </Link>
                         <Link :href="route('login')" as="button" type="button" preserve-scroll class="nav-link"
-                              :class="{'bg-slate-100': $page.component === 'Auth/Login'}">
+                              :class="{'active': $page.component === 'Auth/Login'}">
                             Login
                         </Link>
                     </div>
@@ -57,6 +52,16 @@
             <slot/>
         </main>
     </div>
+
+    <footer class="fixed bottom-0 center-x w-full">
+        <div class="bg-primary text-white text-center py-10">
+            <p class="text-sm">© 2025 Reservo. All rights reserved.</p>
+            <p class="text-xs">Made with ❤️ by <a href="https://www.linkedin.com/in/michal-kri%C5%A1tof-74a229204/"
+                                                  class="text-blue-400 hover:underline" target="_blank">Michal
+                Krištof</a>
+            </p>
+        </div>
+    </footer>
 
     <TransitionGroup
         tag="div"

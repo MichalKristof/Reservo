@@ -31,8 +31,8 @@
                             :key="hour"
                             class="px-3 py-2.5 rounded-md text-center text-sm"
                             :class="{
-                                'bg-green-400': !isHourReserved(hour, table.reservations),
-                                'bg-orange-400 text-white': isHourReserved(hour, table.reservations)
+                                'bg-slate-200': !isHourReserved(hour, table.reservations),
+                                'bg-primary text-white': isHourReserved(hour, table.reservations)
                             }"
                             :title="`${hour}:00`"
                         >

@@ -1,17 +1,29 @@
 <template>
     <div class="relative">
         <div :class="{'blur-sm pointer-events-none': loading}" class="form">
-            <component
+            <div
                 v-for="(stepItem, index) in formData"
                 :key="index"
-                :is="stepItem.component"
-                v-model="form[stepItem.key]"
-                :name="stepItem.name"
-                :type="stepItem.type"
-                :options="stepItem.options"
-                :message="form.errors[stepItem.key]"
-                :disabled="loading"
-            />
+                :class="[
+                    isFinalStep ? 'opacity-100' : (
+                      index < currentStepIndex ? 'opacity-100' :
+                      index === currentStepIndex ? 'opacity-100' :
+                      'opacity-30 pointer-events-none'
+                    )
+                  ]"
+            >
+                <component
+                    :key="index"
+                    :is="stepItem.component"
+                    v-model="form[stepItem.key]"
+                    :name="stepItem.name"
+                    :type="stepItem.type"
+                    :options="stepItem.options"
+                    :message="form.errors[stepItem.key]"
+                    :disabled="loading"
+                />
+            </div>
+
 
             <div v-if="fetchDataError" class="flex justify-between items-center mb-4">
                 <p class="text-slate-600">
@@ -35,7 +47,7 @@
             class="absolute inset-0 flex items-center justify-center bg-transparent z-50"
         >
             <svg
-                class="animate-spin h-10 w-10 text-blue-600"
+                class="animate-spin h-10 w-10 text-primary"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -137,6 +149,18 @@ const formData = computed<
         required: true,
     },
 ]);
+
+const currentStepIndex = computed(() => {
+    return formData.value.findIndex((step) => {
+        const val = form[step.key];
+        return val === null || val === '';
+    });
+});
+
+const isFinalStep = computed(() => {
+    return currentStepIndex.value === -1;
+});
+
 const submitForm = () => {
     form.post(route('reservations.store'), {
         onSuccess: (page) => {

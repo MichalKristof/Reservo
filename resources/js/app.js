@@ -29,7 +29,7 @@ createInertiaApp({
     },
 
     progress: {
-        color: '#003366',
+        color: 'white',
         includeCSS: true,
         showSpinner: true,
     },

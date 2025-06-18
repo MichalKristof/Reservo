@@ -78,6 +78,20 @@ npm install
 npm run dev
 ```
 
+## Users
+
+The application comes with a few pre-defined users for testing purposes:
+
+- **Admin User**:
+    - Email: `admin@example.com`
+    - Password: `universal`
+    - Role: Admin (can see tables occupancy)
+
+- **Regular User**:
+    - Email: `test@example.com`
+    - Password: `universal`
+    - Role: Regular user (can make reservations)
+
 ## Running Tests
 
 The backend unit and feature tests (PestPHP + PHPUnit) will automatically spin up the PHP‑FPM and MySQL test containers,

@@ -2,7 +2,7 @@
     <Head :title="`| ${$page.component}`"/>
     <h1 class="title">Welcome to Reservo {{ $page.props.auth.user.name }}</h1>
     <div class="flex w-full justify-center align-items-center">
-        <img src="/public/images/reservo-logo-512x512.png" alt="Reservo Logo" class="w-auto"/>
+        <img src="/public/images/reservo_logo.jpeg" alt="Reservo Logo" class="w-auto"/>
     </div>
 
     <div class="flex justify-center items-center gap-5">

@@ -1,20 +1,21 @@
 <template>
     <Head :title="`| ${$page.component}`"/>
-    <h1 class="title">Welcome to Reservo</h1>
-    <h5 class="subtitle">To book a table, please sign up or log in to your account.</h5>
-    <div class="flex w-full justify-center align-items-center">
-        <img src="/public/images/reservo-logo-512x512.png" alt="Reservo Logo" class="w-auto"/>
-    </div>
-
-    <div class="flex justify-center items-center gap-5">
-        <Link :href="route('register')" as="button" type="button" class="primary-btn" preserve-scroll>
-            Register
-        </Link>
-
-        <Link :href="route('login')" as="button" type="button" class="primary-btn" preserve-scroll>
-            Login
-        </Link>
-    </div>
+    <section class="grid md:grid-cols-2 gap-8 py-16 items-center">
+        <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">Easy Reservations</h2>
+            <p class="text-slate-700 text-lg mb-4">
+                Book your table in seconds. No phone calls, no hassle — just a smooth online experience. Make your
+                reservation
+                with Reservo and enjoy your dining experience without the wait. Register now to get started!
+            </p>
+            <Link :href="route('register')" as="button" type="button" class="primary-btn" preserve-scroll>
+                Register
+            </Link>
+        </div>
+        <div class="flex justify-center">
+            <img src="/public/images/reservo_logo.jpeg" alt="Reservo Logo" class="w-auto"/>
+        </div>
+    </section>
 </template>
 
 <script setup lang="ts">

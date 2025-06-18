@@ -1,7 +1,7 @@
 <template>
     <Head :title="` | ${$page.component}`"/>
     <div class="flex justify-center">
-        <img src="/public/images/reservo-logo-192x192.png" alt="Reservo Logo" class="w-auto"/>
+        <img src="/public/images/reservo_logo.jpeg" alt="Reservo Logo" class="h-30 2-auto"/>
     </div>
     <div class="w-2/4 mx-auto">
         <form @submit.prevent="submit" class="form">
