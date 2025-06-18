@@ -42,7 +42,12 @@ This project was developed as part of the Laravel Developer task for Snadnee.
 
 ## Environment Variables
 
-Copy `.env.example` to `.env` and update as needed.  
+Copy `.env.example` to `.env` and update as needed.
+
+```bash
+cp .env.example .env
+```
+
 For tests, see `.env.testing`:
 
 ## Development Setup
@@ -64,6 +69,10 @@ make migrate-fresh
 
 # 4. Open a bash shell inside the workspace container
 make bash
+
+# 5. Install dependencies inside the container
+composer install
+npm install
 
 # 5. From inside the container, start the frontend dev server
 npm run dev
