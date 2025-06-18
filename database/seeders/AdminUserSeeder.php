@@ -17,7 +17,7 @@ class AdminUserSeeder extends Seeder
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin',
-                'password' => Hash::make('secure-password'),
+                'password' => Hash::make('universal'),
                 'is_admin' => true,
             ]
         );

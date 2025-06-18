@@ -1,0 +1,45 @@
+services:
+  php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/common/php-fpm/Dockerfile
+      target: development
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    user: "${UID:-1000}:${GID:-1000}"
+    environment:
+      XDEBUG_MODE: coverage
+    env_file:
+      - .env.testing
+    volumes:
+      - ./:/var/www
+    depends_on:
+      mysql_test:
+        condition: service_healthy
+    networks:
+      - laravel-testing
+
+  mysql_test:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: app_testing
+      MYSQL_USER: laravel_test
+      MYSQL_PASSWORD: secret_test
+      MYSQL_ROOT_PASSWORD: rootsecret_test
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1" ]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - mysql-data-testing:/var/lib/mysql
+    networks:
+      - laravel-testing
+
+networks:
+  laravel-testing:
+    driver: bridge
+
+volumes:
+  mysql-data-testing:
