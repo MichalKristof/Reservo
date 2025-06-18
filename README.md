@@ -32,7 +32,6 @@ This project was developed as part of the Laravel Developer task for Snadnee.
 - **PestPHP** + **PHPUnit**
 - **Xdebug** (coverage, debug)
 - **Laravel Pint**, **IDE Helper**, **Pail**
--
 
 ## Prerequisites
 
@@ -40,7 +39,6 @@ This project was developed as part of the Laravel Developer task for Snadnee.
 - Docker Compose plugin
 - Composer ≥ 2.0
 - Node.js ≥ 18 (For local development)
--
 
 ## Environment Variables
 
