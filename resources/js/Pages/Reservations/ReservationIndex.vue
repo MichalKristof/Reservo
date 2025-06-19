@@ -11,17 +11,19 @@
             <div class="flex justify-center items-center mt-10">
                 <Link :href="route('reservations.create')" as="button" type="button" class="primary-btn"
                       preserve-scroll>
-                    Create Reservations
+                    Create Reservation
                 </Link>
             </div>
         </div>
         <h2 v-if="upcomingReservations.length > 0" class="text-xl font-semibold mb-4">Active Reservations</h2>
-        <div v-for="reservation in upcomingReservations" :key="reservation.id"
-             class="border border-slate-300 shadow-md p-3 rounded-md">
-            <p><strong>#</strong> {{ reservation.table.name }}</p>
-            <p><strong>Reserved:</strong> {{ reservation.reserved_at }}</p>
-            <p><strong>Duration:</strong> {{ reservation.duration + "Hours" }}</p>
-            <p><strong>Number Of People</strong> {{ reservation.number_of_people }}</p>
+        <div class="grid grid-cols-2 gap-5">
+            <div v-for="reservation in upcomingReservations" :key="reservation.id"
+                 class="border border-slate-300 shadow-md p-3 rounded-md">
+                <p><strong>#</strong> {{ reservation.table.name }}</p>
+                <p><strong>Reserved:</strong> {{ reservation.reserved_at }}</p>
+                <p><strong>Duration:</strong> {{ reservation.duration + "Hours" }}</p>
+                <p><strong>Number Of People</strong> {{ reservation.number_of_people }}</p>
+            </div>
         </div>
 
         <div v-if="pastReservations.length > 0" class="mt-10">

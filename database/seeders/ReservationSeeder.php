@@ -15,14 +15,14 @@ class ReservationSeeder extends Seeder
     public function run(): void
     {
         Reservation::create([
-            'user_id' => 1,
+            'user_id' => 2,
             'table_id' => 1,
             'reserved_at' => Carbon::yesterday()->setTime(17, 0),
             "number_of_people" => 1,
             'duration' => 1,
         ]);
         Reservation::create([
-            'user_id' => 1,
+            'user_id' => 2,
             'table_id' => 2,
             'reserved_at' => Carbon::tomorrow()->setTime(17, 0),
             "number_of_people" => 2,

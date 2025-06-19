@@ -23,7 +23,6 @@
 <script setup lang="ts">
 import {useForm} from '@inertiajs/vue3';
 import Input from "../../Components/Input.vue";
-import {route} from "../../../../vendor/tightenco/ziggy/src/js/index.js";
 
 const form = useForm({
     name: '',

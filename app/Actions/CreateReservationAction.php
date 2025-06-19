@@ -52,6 +52,7 @@ class CreateReservationAction
                         'duration' => $duration,
                         'number_of_people' => $numberOfPeople,
                     ]);
+
                 }
             }
 

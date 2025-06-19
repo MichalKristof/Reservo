@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
             AdminUserSeeder::class,
             UserSeeder::class,
             TableSeeder::class,
-            ReservationSeeder::class,
+//            ReservationSeeder::class,
         ]);
     }
 }

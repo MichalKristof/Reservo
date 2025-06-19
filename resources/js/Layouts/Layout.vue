@@ -11,10 +11,10 @@
                     <Link :href="route('dashboard')" preserve-scroll class="nav-link"
                           :class="{'active': $page.component === 'Dashboard'}">Dashboard
                     </Link>
-                    <Link :href="route('reservations.index')" preserve-scroll class="nav-link"
-                          :class="{'active': $page.component === 'Reservations/ReservationIndex'}">Reservation
+                    <Link v-if="!isAdmin" :href="route('reservations.index')" preserve-scroll class="nav-link"
+                          :class="{'active': $page.component === 'Reservations/ReservationIndex'}">Reservations
                     </Link>
-                    <Link :href="route('reservations.create')" preserve-scroll class="nav-link"
+                    <Link v-if="!isAdmin" :href="route('reservations.create')" preserve-scroll class="nav-link"
                           :class="{'active': $page.component === 'Reservations/ReservationCreate'}">Create
                         Reservation
                     </Link>
