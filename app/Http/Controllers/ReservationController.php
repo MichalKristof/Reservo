@@ -6,6 +6,7 @@ use App\Actions\CreateReservationAction;
 use App\Actions\GetUserReservationsAction;
 use App\DTO\ReservationData;
 use App\Http\Requests\StoreReservationRequest;
+use App\Jobs\SendReservationCreatedMail;
 use App\Mail\ReservationCreateMail;
 use Exception;
 use Illuminate\Support\Facades\Mail;
@@ -56,7 +57,7 @@ class ReservationController extends Controller
                 $reservationData->numberOfPeople
             );
 
-            Mail::to($reservation->user->email)->send(new ReservationCreateMail($reservation));
+            dispatch(new SendReservationCreatedMail($reservation));
 
             return Inertia::render('Reservations/ReservationCreate', [
                 'flash' => [

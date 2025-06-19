@@ -2,7 +2,7 @@
     # Your reservation has been successfully created. Here are the details:
 
     **Reservation ID:** {{ $reservation->id }}
-    **Date:** {{ $reservation->reserved_at->format('Y-m-d H:i') }}
+    **Date:** {{ $reservation->reserved_at }}
     **Duration:** {{ $reservation->duration }} Hour(s)
     **Number of Guests:** {{ $reservation->number_of_people }}
 
