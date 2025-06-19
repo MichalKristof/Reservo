@@ -16,5 +16,8 @@ migrate:
 migrate-fresh:
 	docker compose -f docker-compose.dev.yaml exec workspace php artisan migrate:fresh --seed
 
+queue:
+	docker compose -f docker-compose.dev.yaml exec workspace php artisan queue:work
+
 test:
 	./run-tests.sh

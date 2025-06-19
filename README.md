@@ -102,6 +102,14 @@ run migrations, execute tests, and tear everything down when complete:
 make test
 ```
 
+## Running Queue Workers
+
+To run the queue workers, you can use the following command:
+
+```bash
+make queue
+```
+
 ## Application Structure and API Routes
 
 The application backend is built with Laravel and follows a RESTful API design for managing authentication,
